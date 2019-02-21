@@ -2,7 +2,7 @@
 
 ROOM_DIR=/home/deliang/www
 
-cd ${ROOM_DIR}/hi_come_on/store-fe
+cd ${ROOM_DIR}/comeon
 git pull
 git checkout dev-store
 
