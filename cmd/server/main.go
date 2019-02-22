@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os/exec"
+	"strings"
 )
 
 func main() {
@@ -13,17 +14,16 @@ func main() {
 }
 
 func webHook(w http.ResponseWriter, r *http.Request) {
-	body, err := r.GetBody()
+	content, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	content, err := ioutil.ReadAll(body)
-	if err != nil {
-		fmt.Println(err)
+	if strings.Contains(string(content), "chore: build dev prod") {
+		fmt.Println("chore: build dev prod")
 		return
 	}
-	fmt.Println(content)
+	fmt.Println(string(content))
 	go func() {
 		res, err := exec.Command("bash", "../../bin/deploy.sh").Output()
 		if err != nil {
