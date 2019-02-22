@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"os/exec"
 )
@@ -12,6 +13,17 @@ func main() {
 }
 
 func webHook(w http.ResponseWriter, r *http.Request) {
+	body, err := r.GetBody()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	content, err := ioutil.ReadAll(body)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(content)
 	go func() {
 		res, err := exec.Command("bash", "../../bin/deploy.sh").Output()
 		if err != nil {
